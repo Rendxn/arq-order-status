@@ -21,7 +21,11 @@ const OrderListItem: React.FC<IProps> = ({ order }) => {
 
   const updateOrderStatus = useCallback(
     debounce(async (value: string) => {
-      await api('/orders', { method: 'PATCH', body: { status: value } })
+      try {
+        await api('/orders', { method: 'PATCH', body: { status: value } })
+      } catch (error) {
+        console.log(error)
+      }
     }, 1000),
     []
   )
@@ -35,7 +39,7 @@ const OrderListItem: React.FC<IProps> = ({ order }) => {
       <div className="flex h-full flex-col justify-between p-6">
         <div>
           <div>
-            <h2 className="text-xl font-bold text-slate-800">
+            <h2 className="text-xl font-bold text-green-800">
               Pedido # {order._id?.slice(0, 6)}
             </h2>
             <span className="block text-xs text-slate-400">{order._id}</span>
@@ -70,9 +74,7 @@ const OrderListItem: React.FC<IProps> = ({ order }) => {
                     key={stateIdx}
                     className={({ active }) =>
                       `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                        active
-                          ? 'bg-slate-300 text-slate-900'
-                          : 'text-slate-800'
+                        active ? 'bg-green-50 text-green-900' : 'text-slate-800'
                       }`
                     }
                     value={state}
@@ -87,7 +89,7 @@ const OrderListItem: React.FC<IProps> = ({ order }) => {
                           {state}
                         </span>
                         {selected ? (
-                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-800">
+                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-green-900">
                             <CheckIcon className="h-5 w-5" aria-hidden="true" />
                           </span>
                         ) : null}
