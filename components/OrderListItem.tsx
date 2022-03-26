@@ -13,7 +13,7 @@ interface IProps {
   order: Order
 }
 
-const status = ['Creado', 'En reparto', 'Entregado']
+const status = ['Creado', 'Empacado', 'En reparto', 'Entregado']
 
 const OrderListItem: React.FC<IProps> = ({ order }) => {
   const currentStatus = order.status ?? 'Creado'
