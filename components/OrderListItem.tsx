@@ -7,6 +7,7 @@ import api from '~/lib/fetch'
 import { debounce } from 'debounce'
 import { Order } from '~/models/Order'
 import OrderProductList from './OrderProductList'
+import { updateOneOrder } from '~/lib/collections/orders'
 
 interface IProps {
   order: Order
@@ -22,12 +23,13 @@ const OrderListItem: React.FC<IProps> = ({ order }) => {
   const updateOrderStatus = useCallback(
     debounce(async (value: string) => {
       try {
-        await api('/orders', { method: 'PATCH', body: { status: value } })
+        const updated = await updateOneOrder(order._id as string, value)
+        console.log(updated)
       } catch (error) {
         console.log(error)
       }
-    }, 1000),
-    []
+    }, 2000),
+    [order._id]
   )
 
   const handleSelectChange = (value: string) => {
